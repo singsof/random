@@ -1,4 +1,4 @@
-export default class TextScramble {
+  class TextScramble {
     constructor(el) {
       this.el = el;
       this.chars = "000!<>-_\\/[]{}—=+*^?#________";
