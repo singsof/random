@@ -26,7 +26,7 @@ class TextScramble {
     this.frame = 0;
     this.update();
   }
-  update(specialCharactersSpeed = 0.28) {
+  update() {
     let output = "";
     let complete = 0;
     for (let i = 0, n = this.queue.length; i < n; i++) {
@@ -88,9 +88,18 @@ const phrases = [
 // ——————————————————————————————————————————————————
 
 let specialCharactersSpeed = 0.28; //ความเร็วในการเปลี่ยนอักษรพิเศษ
+const specialCharactersSpeedFN = (ev) =>{
+    // console.log(ev.value)
+    specialCharactersSpeed = ev.value * 0.10;
+    console.log(specialCharactersSpeed)
+}
 let characterChangeTimeStart = 50; //ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม
 let characterChangeTimeEnd = 50; //ช่วงเวลาเปลี่ยนตัวอักษร  ตอนจบ
-let speedChange = timeDelay(0.001); // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
+let speedChange = 100; // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
+const speedChangeFN = (ev) => {
+    speedChange = ev.value * 100;
+    console.log(speedChange)
+}
 
 let runStatus = true; // สถานะเริ่มหรือ หยุด
 let countTime = 1;

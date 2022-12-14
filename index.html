@@ -105,13 +105,14 @@
                         <a class="nav-link" aria-current="page" href="index.html">หน้าสุ่ม</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page"  data-bs-toggle="modal" href="#hidata" role="button" >ประวัติการสุ่ม</a>
+                        <a class="nav-link" aria-current="page" data-bs-toggle="modal" href="#hidata"
+                            role="button">ประวัติการสุ่ม</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="modal" href="#addata" role="button">เพิ่มข้อมูล</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="modal"  href="#settingValue" role="button">ตั้งค่า</a>
+                        <a class="nav-link" data-bs-toggle="modal" href="#settingValue" role="button">ตั้งค่า</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:startRandom('txt-Random','btn-Random')">เริ่ม</a>
@@ -154,14 +155,28 @@
 
 
 <div class="modal fade" id="settingValue" aria-hidden="true" aria-labelledby="settingValueLabel" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen ">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="settingValueLabel">ตั้งค่า</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-control-sm">
+                            <label class="form-label" for="">เว้นช่วงระหว่างการเปลี่ยนตัว</label>
+                            <input id="speedChangeID" min="1" max="10" step="1" class="" type="range" onchange="speedChangeFN(this)">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-control-sm">
+                            <label class="form-label" for="">ความเร็วในการเปลี่ยนอักษรพิเศษ</label>
+                            <input id="specialCharactersSpeedID" class="" type="range"  onchange="specialCharactersSpeedFN(this)">
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <!-- <button type="button" class="btn btn-primary" >บันทึกข้อมูล</button> -->
@@ -179,7 +194,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                
+
             </div>
             <div class="modal-footer">
                 <!-- <button type="button" class="btn btn-primary" >บันทึกข้อมูล</button> -->
