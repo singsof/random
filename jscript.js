@@ -116,7 +116,7 @@ const speedChangeFN = (ev) => {
 
 let runStatus = true; // สถานะเริ่มหรือ หยุด
 let countTime = 1;
-let maxTime = 10;
+let maxTime = 10; // ตั้งค่าเวลา
 
 // ——————————————————————————————————————————————————
 // Example
@@ -155,6 +155,7 @@ const startRandom = (textID, btnID) => {
   document.getElementById(btnID).style.display = "none";
 
   next();
+  
 };
 
 const stopRandom = () => {
