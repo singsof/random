@@ -166,17 +166,34 @@
                     <div class="col-sm-6">
                         <div class="form-control-sm">
                             <label class="form-label" for="">เว้นช่วงระหว่างการเปลี่ยนตัว</label>
-                            <input id="speedChangeID" min="1" max="10" step="1" class="" type="range" onchange="speedChangeFN(this)">
+                            <input id="speedChangeID" min="1" max="10" step="1" class="" type="range"
+                                onchange="speedChangeFN(this)">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-control-sm">
                             <label class="form-label" for="">ความเร็วในการเปลี่ยนอักษรพิเศษ</label>
-                            <input id="specialCharactersSpeedID" class="" type="range"  onchange="specialCharactersSpeedFN(this)">
+                            <input id="specialCharactersSpeedID" class="" type="range" min="0.01" max="30" step="0.01" value="0.28"
+                                onchange="specialCharactersSpeedFN(this)">
                         </div>
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-control-sm">
+                            <label class="form-label" for="">ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม</label>
+                            <input id="speedChangeID" min="50" max="3000" step="1" class="" type="range" value="400"
+                                onchange="characterChangeTimeStartFN(this)">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-control-sm">
+                            <label class="form-label" for="">ช่วงเวลาเปลี่ยนตัวอักษร  ตอนจบ</label>
+                            <input id="specialCharactersSpeedID" min="10" max="500"  step="1"  class="" type="range" value="40"
+                                onchange="characterChangeTimeEndFN(this)">
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <!-- <button type="button" class="btn btn-primary" >บันทึกข้อมูล</button> -->
