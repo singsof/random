@@ -90,16 +90,29 @@ const phrases = [
 let specialCharactersSpeed = 0.28; //ความเร็วในการเปลี่ยนอักษรพิเศษ
 const specialCharactersSpeedFN = (ev) =>{
     // console.log(ev.value)
-    specialCharactersSpeed = ev.value * 0.10;
+    specialCharactersSpeed = ev.value;
     console.log(specialCharactersSpeed)
 }
-let characterChangeTimeStart = 50; //ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม
-let characterChangeTimeEnd = 50; //ช่วงเวลาเปลี่ยนตัวอักษร  ตอนจบ
-let speedChange = 100; // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
+
+let characterChangeTimeStart = 40; //ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม
+const characterChangeTimeStartFN = (ev) =>{
+    characterChangeTimeStart = ev.value;
+    console.log(characterChangeTimeStart)
+
+}
+
+let characterChangeTimeEnd = 40; //ช่วงเวลาเปลี่ยนตัวอักษร  ตอนจบ
+const characterChangeTimeEndFN = (ev) => {
+  characterChangeTimeEnd = ev.value;
+  console.log(characterChangeTimeEnd)
+}
+
+let speedChange = 400; // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
 const speedChangeFN = (ev) => {
-    speedChange = ev.value * 100;
+    speedChange = ev.value;
     console.log(speedChange)
 }
+
 
 let runStatus = true; // สถานะเริ่มหรือ หยุด
 let countTime = 1;
