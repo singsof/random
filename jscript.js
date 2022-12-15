@@ -88,31 +88,29 @@ const phrases = [
 // ——————————————————————————————————————————————————
 
 let specialCharactersSpeed = 0.28; //ความเร็วในการเปลี่ยนอักษรพิเศษ
-const specialCharactersSpeedFN = (ev) =>{
-    // console.log(ev.value)
-    specialCharactersSpeed = ev.value;
-    console.log(specialCharactersSpeed)
-}
+const specialCharactersSpeedFN = (ev) => {
+  // console.log(ev.value)
+  specialCharactersSpeed = ev.value;
+  console.log(specialCharactersSpeed);
+};
 
 let characterChangeTimeStart = 40; //ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม
-const characterChangeTimeStartFN = (ev) =>{
-    characterChangeTimeStart = ev.value;
-    console.log(characterChangeTimeStart)
-
-}
+const characterChangeTimeStartFN = (ev) => {
+  characterChangeTimeStart = ev.value;
+  console.log(characterChangeTimeStart);
+};
 
 let characterChangeTimeEnd = 40; //ช่วงเวลาเปลี่ยนตัวอักษร  ตอนจบ
 const characterChangeTimeEndFN = (ev) => {
   characterChangeTimeEnd = ev.value;
-  console.log(characterChangeTimeEnd)
-}
+  console.log(characterChangeTimeEnd);
+};
 
 let speedChange = 400; // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
 const speedChangeFN = (ev) => {
-    speedChange = ev.value;
-    console.log(speedChange)
-}
-
+  speedChange = ev.value;
+  console.log(speedChange);
+};
 
 let runStatus = true; // สถานะเริ่มหรือ หยุด
 let countTime = 1;
@@ -155,12 +153,14 @@ const startRandom = (textID, btnID) => {
   document.getElementById(btnID).style.display = "none";
 
   next();
-  
 };
 
-const stopRandom = () => {
+const stopRandom = (textID, btnID) => {
   runStatus = false;
-  //   let resut = getRndInteger(0, phrases.length); // คำตอบ
+  let resut = getRndInteger(0, phrases.length); // คำตอบ
 
+
+  // document.getElementById(textID).style.display = "none";
+  // document.getElementById(btnID).style.display = "block";
   //   fx.setText(phrases[resut], 70, 80);
 };
