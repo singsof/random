@@ -57,6 +57,11 @@ class TextScramble {
   }
 }
 
+const removeItemSt = (name, txtArrayID) => {
+  localStorage.removeItem(name);
+  document.getElementById(txtArrayID).value = "";
+  localStorage.setItem(name, "");
+};
 // Settings Functions
 
 // สุ่ม ต่ำ - สูงสุด
@@ -71,51 +76,50 @@ const getRndInteger = (min, max) => {
 //  startSettings ค่าเรริ่มต้น
 // ——————————————————————————————————————————————————
 const el = document.querySelector(".text");
-// const phrases = [];
-const phrases = [
-  "สิรภพ โชติพาณิชย",
-  "ปีวรา แสงตะวัน",
-  "สราวลี ขจรเกียรติสกุล",
-  "ขรรค์ ไกรรอด",
-  "กนกพล สรพินิจ",
-  "อภิลดา ศิริพัฒน์",
-  "ดารินทร์ ปรีชาวงศ",
-  "ชนนิกา อรุณฉาย",
-  "ชลนิภา ปรีดาศิริกุล",
-  "ติณณภพ เดชบุญ",
-];
+let phrases = [];
 
+const updateData = () => {
+  if (localStorage.getItem("dataRandom") !== "") {
+    let dataRandom = JSON.parse(localStorage.getItem("dataRandom"));
+    phrases = dataRandom;
+  }
+};
+updateData();
 // ——————————————————————————————————————————————————
 
 let specialCharactersSpeed = 0.28; //ความเร็วในการเปลี่ยนอักษรพิเศษ
-const specialCharactersSpeedFN = (ev) => {
+const specialCharactersSpeedFN = (ev, txt) => {
   // console.log(ev.value)
   specialCharactersSpeed = ev.value;
   console.log(specialCharactersSpeed);
+  document.getElementById(txt).innerHTML = specialCharactersSpeed;
 };
 
 let characterChangeTimeStart = 40; //ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม
-const characterChangeTimeStartFN = (ev) => {
+const characterChangeTimeStartFN = (ev, txt) => {
   characterChangeTimeStart = ev.value;
   console.log(characterChangeTimeStart);
+  document.getElementById(txt).innerHTML = characterChangeTimeStart;
 };
 
 let characterChangeTimeEnd = 40; //ช่วงเวลาเปลี่ยนตัวอักษร  ตอนจบ
-const characterChangeTimeEndFN = (ev) => {
+const characterChangeTimeEndFN = (ev, txt) => {
   characterChangeTimeEnd = ev.value;
   console.log(characterChangeTimeEnd);
+  document.getElementById(txt).innerHTML = characterChangeTimeEnd;
 };
 
 let speedChange = 400; // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
-const speedChangeFN = (ev) => {
+const speedChangeFN = (ev, txt) => {
   speedChange = ev.value;
   console.log(speedChange);
+  document.getElementById(txt).innerHTML = speedChange;
 };
 
 let runStatus = true; // สถานะเริ่มหรือ หยุด
 let countTime = 1;
 let maxTime = 10; // ตั้งค่าเวลา
-
+var audio = new Audio("/audio/m1.mp3");
 // ——————————————————————————————————————————————————
 // Example
 // ——————————————————————————————————————————————————
@@ -123,42 +127,63 @@ let maxTime = 10; // ตั้งค่าเวลา
 // endSettings
 const fx = new TextScramble(el);
 
-const next = () => {
+const next = (TimeDateStart) => {
+  let TimeNowRandom = new Date();
+  let TimeStartRandom = new Date(TimeDateStart);
+  let TimeEndRandom = new Date(TimeStartRandom);
+  TimeEndRandom.setTime(TimeStartRandom.getTime() + maxTime * 1000);
+
   let indexLenth = getRndInteger(0, phrases.length);
   fx.setText(
-    phrases[indexLenth],
+    phrases[indexLenth].name,
     characterChangeTimeStart,
     characterChangeTimeEnd
   ).then(() => {
-    if (runStatus === true) {
-      setTimeout(next, speedChange);
+    if (TimeNowRandom.getTime() > TimeEndRandom.getTime()) {
+      console.log("เวลาเริ่ม : " + TimeStartRandom);
+      console.log("เวลาจบ : " + TimeEndRandom);
+      console.log(phrases);
+
+      let resut = getRndInteger(0, phrases.length); // คำตอบ
+      fx.setText(phrases[indexLenth].name, 300, 200);
+
+      console.log(phrases);
+
+      runStatus = false;
     }
 
+    if (runStatus === true) {
+      setTimeout(next(TimeDateStart), speedChange);
+    }
     if (runStatus === false) {
       return false;
     }
   });
+
   console.log("ลำดับสุ่มแสดง : " + indexLenth);
 };
 
 const startRandom = (textID, btnID) => {
-  if (phrases.length === 0) {
+  if (phrases == "") {
     alert("กรุณาเพิ่มข้อมูล");
     $("#addata").modal("toggle");
     return false;
   }
+  const TimeDateStart = new Date();
 
   runStatus = true;
   document.getElementById(textID).style.display = "block";
   document.getElementById(btnID).style.display = "none";
 
-  next();
+  // console.log(phrases);
+  // audio.play();
+  next(TimeDateStart);
 };
 
 const stopRandom = (textID, btnID) => {
   runStatus = false;
-  let resut = getRndInteger(0, phrases.length); // คำตอบ
-
+  // let resut = getRndInteger(0, phrases.length); // คำตอบ
+  audio.pause();
 
   // document.getElementById(textID).style.display = "none";
   // document.getElementById(btnID).style.display = "block";
