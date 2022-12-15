@@ -42,6 +42,9 @@
         if (localStorage.getItem('dataRandom') === null) {
             localStorage.setItem('dataRandom', '');
         }
+        if (localStorage.getItem('reward') === null) {
+            localStorage.setItem('reward', '');
+        }
     });
 
     let ExcelToJSON = function () {
@@ -240,7 +243,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <table class="table table-borderless" id="table-hi">
+                    <tr>
+                        <th>รหัส</th>
+                        <th>ชื่อ</th>
+                    </tr>
 
+                </table>
             </div>
             <div class="modal-footer">
                 <!-- <button type="button" class="btn btn-primary" >บันทึกข้อมูล</button> -->
@@ -252,6 +261,7 @@
 
 
 <script>
+
 
     if (localStorage.getItem('dataRandom') !== '') {
         stingName = '';
@@ -265,12 +275,20 @@
         phrases = dataRandom;
         // console.log(phrases[2].name)
     }
-
     document.getElementById('upload').addEventListener('change', handleFileSelect, false);
+
+
 </script>
 
 
 <script src="jscript.js"></script>
+<script>
+
+    if (localStorage.getItem('reward') !== '') {
+        updateReward("table-hi");
+    }
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
     integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
     crossorigin="anonymous"></script>

@@ -84,7 +84,31 @@ const updateData = () => {
     phrases = dataRandom;
   }
 };
+
 updateData();
+
+const updateReward = (tableID) => {
+  let stinHtml = " <tr> <th>รหัส</th><th>ชื่อ</th></tr>";
+  const reward = JSON.parse(localStorage.getItem("reward"));
+  reward.forEach((value) => {
+    stinHtml +=
+      "<tr>" +
+      "<td>" +
+      value.key +
+      "</td>" +
+      "<td>" +
+      value.name +
+      "</td>" +
+      "</tr>";
+  });
+
+//   alert("Please enter")
+
+  // $("#table-hi").empty();
+  document.getElementById(tableID).innerHTML = stinHtml;
+  // $("#table-hi").html(stinHtml)
+};
+
 // ——————————————————————————————————————————————————
 
 let specialCharactersSpeed = 0.28; //ความเร็วในการเปลี่ยนอักษรพิเศษ
@@ -118,7 +142,7 @@ const speedChangeFN = (ev, txt) => {
 
 let runStatus = true; // สถานะเริ่มหรือ หยุด
 let countTime = 1;
-let maxTime = 10; // ตั้งค่าเวลา
+let maxTime = 5; // ตั้งค่าเวลา
 var audio = new Audio("/audio/m1.mp3");
 // ——————————————————————————————————————————————————
 // Example
@@ -140,14 +164,30 @@ const next = (TimeDateStart) => {
     characterChangeTimeEnd
   ).then(() => {
     if (TimeNowRandom.getTime() > TimeEndRandom.getTime()) {
-      console.log("เวลาเริ่ม : " + TimeStartRandom);
-      console.log("เวลาจบ : " + TimeEndRandom);
-      console.log(phrases);
+      let resutIndex = getRndInteger(0, phrases.length); // คำตอบ
+      fx.setText(phrases[resutIndex].name, 500, 500);
 
-      let resut = getRndInteger(0, phrases.length); // คำตอบ
-      fx.setText(phrases[indexLenth].name, 300, 200);
+      console.log(phrases[resutIndex]);
+      // Delete array
+      // reward
+      const addReward = (value) => {
+        let rewardArrayValue = [];
+        if (localStorage.getItem("reward") == "") {
+          rewardArrayValue.push(value);
+          localStorage.setItem("reward", JSON.stringify(rewardArrayValue));
+        } else {
+          let resutReward = JSON.parse(localStorage.getItem("reward"));
+          rewardArrayValue = resutReward;
+          rewardArrayValue.push(value);
+          localStorage.setItem("reward", JSON.stringify(rewardArrayValue));
+        }
+      };
 
-      console.log(phrases);
+      addReward(phrases[resutIndex]);
+
+      // phrases.splice(resutIndex, 1);
+
+      // console.log(phrases);
 
       runStatus = false;
     }
