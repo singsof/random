@@ -1,10 +1,10 @@
 class TextScramble {
   constructor(el) {
     this.el = el;
-    this.chars = "000!<>-_\\/[]{}—=+*^?#________";
+    this.chars = "!<>-_\\/[]{}—=+*^?#________";
     this.update = this.update.bind(this);
   }
-  setText(newText, characterChangeTimeStart = 40, characterChangeTimeEnd = 40) {
+  setText(newText, characterChangeTimeStart, characterChangeTimeEnd) {
     const oldText = this.el.innerText;
     const length = Math.max(oldText.length, newText.length);
     const promise = new Promise((resolve) => (this.resolve = resolve));
@@ -13,18 +13,16 @@ class TextScramble {
       const from = oldText[i] || "";
       const to = newText[i] || "";
       const start = Math.floor(Math.random() * characterChangeTimeStart);
+      // console.log(start)
       const end = start + Math.floor(Math.random() * characterChangeTimeEnd);
       this.queue.push({ from, to, start, end });
     }
     cancelAnimationFrame(this.frameRequest);
     this.frame = 0;
     this.update();
+    // audio.pause();
+    // audio.currentTime = 0;
     return promise;
-  }
-  stop() {
-    cancelAnimationFrame(this.frameRequest);
-    this.frame = 0;
-    this.update();
   }
   update() {
     let output = "";
@@ -60,6 +58,12 @@ class TextScramble {
 const removeItemSt = (name, txtArrayID) => {
   localStorage.removeItem(name);
   document.getElementById(txtArrayID).value = "";
+  localStorage.setItem(name, "");
+};
+const removeItemStReward = (name, tableID) => {
+  let stinHtml = " <tr> <th>รหัส</th><th>ชื่อ</th></tr>";
+  localStorage.removeItem(name);
+  document.getElementById(tableID).innerHTML = stinHtml;
   localStorage.setItem(name, "");
 };
 // Settings Functions
@@ -102,16 +106,25 @@ const updateReward = (tableID) => {
       "</tr>";
   });
 
-//   alert("Please enter")
-
-  // $("#table-hi").empty();
   document.getElementById(tableID).innerHTML = stinHtml;
-  // $("#table-hi").html(stinHtml)
+};
+
+const addReward = (value) => {
+  let rewardArrayValue = [];
+  if (localStorage.getItem("reward") == "") {
+    rewardArrayValue.push(value);
+    localStorage.setItem("reward", JSON.stringify(rewardArrayValue));
+  } else {
+    let resutReward = JSON.parse(localStorage.getItem("reward"));
+    rewardArrayValue = resutReward;
+    rewardArrayValue.push(value);
+    localStorage.setItem("reward", JSON.stringify(rewardArrayValue));
+  }
 };
 
 // ——————————————————————————————————————————————————
 
-let specialCharactersSpeed = 0.28; //ความเร็วในการเปลี่ยนอักษรพิเศษ
+let specialCharactersSpeed = 5; //ความเร็วในการเปลี่ยนอักษรพิเศษ
 const specialCharactersSpeedFN = (ev, txt) => {
   // console.log(ev.value)
   specialCharactersSpeed = ev.value;
@@ -119,19 +132,20 @@ const specialCharactersSpeedFN = (ev, txt) => {
   document.getElementById(txt).innerHTML = specialCharactersSpeed;
 };
 
-let characterChangeTimeStart = 40; //ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม
+let characterChangeTimeEnd = 5; //ช่วงเวลาเปลี่ยนตัวอักษร  ตอนจบ
+let characterChangeTimeStart = 5; //ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม
 const characterChangeTimeStartFN = (ev, txt) => {
-  characterChangeTimeStart = ev.value;
+  characterChangeTimeStart = ev.value * -1;
+  characterChangeTimeEnd = characterChangeTimeStart;
   console.log(characterChangeTimeStart);
   document.getElementById(txt).innerHTML = characterChangeTimeStart;
 };
 
-let characterChangeTimeEnd = 40; //ช่วงเวลาเปลี่ยนตัวอักษร  ตอนจบ
-const characterChangeTimeEndFN = (ev, txt) => {
-  characterChangeTimeEnd = ev.value;
-  console.log(characterChangeTimeEnd);
-  document.getElementById(txt).innerHTML = characterChangeTimeEnd;
-};
+// const characterChangeTimeEndFN = (ev, txt) => {
+//   characterChangeTimeEnd = ev.value * -1;
+//   console.log(characterChangeTimeEnd);
+//   document.getElementById(txt).innerHTML = characterChangeTimeEnd;
+// };
 
 let speedChange = 400; // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
 const speedChangeFN = (ev, txt) => {
@@ -143,7 +157,33 @@ const speedChangeFN = (ev, txt) => {
 let runStatus = true; // สถานะเริ่มหรือ หยุด
 let countTime = 1;
 let maxTime = 5; // ตั้งค่าเวลา
-var audio = new Audio("/audio/m1.mp3");
+const maxTimeFN = (ev, txt) => {
+  maxTime = ev.value;
+  console.log(maxTime);
+  document.getElementById(txt).innerHTML = maxTime;
+};
+
+let RewardAudio = new Audio("audio/ra.wav");
+let audio = new Audio();
+const audioNew = (ev, txt) => {
+  audio.load();
+  audio = new Audio("audio/" + ev.value);
+  audio.loop = true;
+  // document.getElementById(txt).innerHTML = ev.text;
+};
+
+const audioPlay = (audio) => {
+  // audio.volume = 0.2;
+  if (audio.paused) {
+    audio.play();
+  }
+};
+const audioStop = (audio) => {
+  audio.pause();
+  audio.currentTime = 0;
+  audio.load();
+};
+
 // ——————————————————————————————————————————————————
 // Example
 // ——————————————————————————————————————————————————
@@ -163,39 +203,39 @@ const next = (TimeDateStart) => {
     characterChangeTimeStart,
     characterChangeTimeEnd
   ).then(() => {
-    if (TimeNowRandom.getTime() > TimeEndRandom.getTime()) {
-      let resutIndex = getRndInteger(0, phrases.length); // คำตอบ
-      fx.setText(phrases[resutIndex].name, 500, 500);
+    const LeanTime = (TimeNow, TimeEnd) => {
+      let TimeSeconds = TimeNow - TimeEnd;
 
-      console.log(phrases[resutIndex]);
-      // Delete array
-      // reward
-      const addReward = (value) => {
-        let rewardArrayValue = [];
-        if (localStorage.getItem("reward") == "") {
-          rewardArrayValue.push(value);
-          localStorage.setItem("reward", JSON.stringify(rewardArrayValue));
-        } else {
-          let resutReward = JSON.parse(localStorage.getItem("reward"));
-          rewardArrayValue = resutReward;
-          rewardArrayValue.push(value);
-          localStorage.setItem("reward", JSON.stringify(rewardArrayValue));
-        }
-      };
+      if(TimeSeconds < 0){
+        TimeSeconds = TimeSeconds * -1;
+      }
+      return TimeSeconds;
+    };
+
+    // let TimeOut =  TimeEndRandom.getSeconds() - TimeNowRandom.getSeconds() ;
+    console.log(
+      LeanTime(TimeEndRandom.getSeconds(), TimeNowRandom.getSeconds())
+    );
+    // if()
+
+    if (TimeNowRandom.getTime() >= TimeEndRandom.getTime()) {
+      audioStop(audio);
+      // console.log()
+
+      let resutIndex = getRndInteger(0, phrases.length); // คำตอบ
+      fx.setText(phrases[resutIndex].name, 100, 100);
 
       addReward(phrases[resutIndex]);
-
-      // phrases.splice(resutIndex, 1);
-
-      // console.log(phrases);
 
       runStatus = false;
     }
 
     if (runStatus === true) {
-      setTimeout(next(TimeDateStart), speedChange);
+      setTimeout(next(TimeDateStart), 100);
     }
     if (runStatus === false) {
+      audioPlay(RewardAudio);
+
       return false;
     }
   });
@@ -204,28 +244,21 @@ const next = (TimeDateStart) => {
 };
 
 const startRandom = (textID, btnID) => {
+  audioPlay(audio);
+
   if (phrases == "") {
     alert("กรุณาเพิ่มข้อมูล");
     $("#addata").modal("toggle");
     return false;
   }
   const TimeDateStart = new Date();
-
   runStatus = true;
   document.getElementById(textID).style.display = "block";
   document.getElementById(btnID).style.display = "none";
-
-  // console.log(phrases);
-  // audio.play();
   next(TimeDateStart);
 };
 
 const stopRandom = (textID, btnID) => {
+  audioStop(audio);
   runStatus = false;
-  // let resut = getRndInteger(0, phrases.length); // คำตอบ
-  audio.pause();
-
-  // document.getElementById(textID).style.display = "none";
-  // document.getElementById(btnID).style.display = "block";
-  //   fx.setText(phrases[resut], 70, 80);
 };

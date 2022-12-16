@@ -21,18 +21,7 @@
         height: 100%;
     }
 
-    .backgroundx {
-        background: red;
-        /* For browsers that do not support gradients */
-        background: -webkit-radial-gradient(circle, red, yellow, green);
-        /* Safari */
-        background: -o-radial-gradient(circle, red, yellow, green);
-        /* Opera 11.6 to 12.0 */
-        background: -moz-radial-gradient(circle, red, yellow, green);
-        /* Firefox 3.6 to 15 */
-        background: radial-gradient(circle, red, yellow, green);
-        /* Standard syntax */
-    }
+    .bcinx {background-color:rgba(48, 255, 59, 0.185);}
 </style>
 
 
@@ -45,6 +34,9 @@
         if (localStorage.getItem('reward') === null) {
             localStorage.setItem('reward', '');
         }
+
+
+
     });
 
     let ExcelToJSON = function () {
@@ -185,15 +177,37 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
+                        <div class="form-control-sm">
+                            <label class="form-label" for="">เวลาในการสุด</label>
+                            <input id="maxTimeID" min="3" max="40" step="1" class="form-range" type="range" value="10"
+                                onchange="maxTimeFN(this,'maxTimeTxT')">
+                            <span id="maxTimeTxT">10</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-control-sm">
+                            <label class="form-label" for="">เลือกเสียง</label>
+                            <select name="" class="form-control" id="audioID" onchange="audioNew(this,'audioTxT')">
+                                <option  value="mp3_1.mp3">เสียง 1</option>
+                                <option selected value="mp3_2.wav">เสียง 2</option>
+                                <option value="mp3_3.wav">เสียง 3</option>
+                                <option value="mp3_4.mp3">เสียง 4</option>
+                                <option value="mp3_5.mp3">เสียง 5</option>
+                            </select>
+                            <!-- <span id="audioTxT">mp3_1.mp3</span> -->
+
+                        </div>
+                    </div>
+                    <!-- <div class="col-sm-12">
                         <div class="form-control-sm">
                             <label class="form-label" for="">เว้นช่วงระหว่างการเปลี่ยนตัว</label>
                             <input id="speedChangeID" min="200" max="2000" step="1" class="form-range" type="range"
                                 value="400" onchange="speedChangeFN(this,'speedChangeTxT')">
                             <span id="speedChangeTxT">400</span>
                         </div>
-                    </div>
-                    <div class="col-sm-6">
+                    </div> -->
+                    <!-- <div class="col-sm-12">
                         <div class="form-control-sm">
                             <label class="form-label" for="">ความเร็วในการเปลี่ยนอักษรพิเศษ</label>
                             <input id="specialCharactersSpeedID" class="form-range" type="range" min="0.01" max="20"
@@ -202,29 +216,29 @@
                             <span id="specialCharactersSpeedTxT">0.28</span>
 
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
+                    </div> -->
+
+                    <div class="col-sm-12">
                         <div class="form-control-sm">
-                            <label class="form-label" for="">ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม</label>
-                            <input id="characterChangeTimeStartID" min="20" max="500" step="1" class="form-range"
-                                type="range" value="40"
+                            <label class="form-label" for="">ช่วงเวลาเปลี่ยนตัวอักษร</label>
+                            <input id="characterChangeTimeStartID" min="-50" max="-3" step="1" class="form-range"
+                                type="range" value="-5"
                                 onchange="characterChangeTimeStartFN(this,'characterChangeTimeStartTxT')">
-                            <span id="characterChangeTimeStartTxT">40</span>
+                            <span id="characterChangeTimeStartTxT">5</span>
 
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <!-- <div class="col-sm-12">
                         <div class="form-control-sm">
                             <label class="form-label" for="">ช่วงเวลาเปลี่ยนตัวอักษร ตอนจบ</label>
-                            <input id="characterChangeTimeEndID" min="20" max="500" step="1" class="form-range"
-                                type="range" value="40"
+                            <input id="characterChangeTimeEndID" min="-50" max="-10" step="1" class="form-range"
+                                type="range" value="-20"
                                 onchange="characterChangeTimeEndFN(this,'characterChangeTimeEndTxT')">
-                            <span id="characterChangeTimeEndTxT">40</span>
+                            <span id="characterChangeTimeEndTxT">20</span>
 
                         </div>
-                    </div>
+                    </div> -->
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -252,7 +266,8 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <!-- <button type="button" class="btn btn-primary" >บันทึกข้อมูล</button> -->
+                <button type="button" onclick="removeItemStReward('reward','table-hi')"
+                    class="btn btn-primary">ล้างข้อมูล</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
             </div>
         </div>
@@ -284,6 +299,13 @@
 <script src="jscript.js"></script>
 <script>
 
+
+    // audioFN()
+
+    let audioEv = document.getElementById("audioID");
+    // audioEv.value;
+    // console.log(audioEv.value);
+    audioNew(audioEv, 'audioTxT');
     if (localStorage.getItem('reward') !== '') {
         updateReward("table-hi");
     }
