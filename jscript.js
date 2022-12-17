@@ -59,6 +59,7 @@ const removeItemSt = (name, txtArrayID) => {
   localStorage.removeItem(name);
   document.getElementById(txtArrayID).value = "";
   localStorage.setItem(name, "");
+  phrases = [];
 };
 const removeItemStReward = (name, tableID) => {
   let stinHtml = " <tr> <th>รหัส</th><th>ชื่อ</th></tr>";
@@ -124,7 +125,7 @@ const addReward = (value) => {
 
 // ——————————————————————————————————————————————————
 
-let specialCharactersSpeed = 5; //ความเร็วในการเปลี่ยนอักษรพิเศษ
+let specialCharactersSpeed; //ความเร็วในการเปลี่ยนอักษรพิเศษ
 const specialCharactersSpeedFN = (ev, txt) => {
   // console.log(ev.value)
   specialCharactersSpeed = ev.value;
@@ -132,8 +133,8 @@ const specialCharactersSpeedFN = (ev, txt) => {
   document.getElementById(txt).innerHTML = specialCharactersSpeed;
 };
 
-let characterChangeTimeEnd = 5; //ช่วงเวลาเปลี่ยนตัวอักษร  ตอนจบ
-let characterChangeTimeStart = 5; //ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม
+let characterChangeTimeEnd; //ช่วงเวลาเปลี่ยนตัวอักษร  ตอนจบ
+let characterChangeTimeStart; //ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม
 const characterChangeTimeStartFN = (ev, txt) => {
   characterChangeTimeStart = ev.value * -1;
   characterChangeTimeEnd = characterChangeTimeStart;
@@ -141,13 +142,8 @@ const characterChangeTimeStartFN = (ev, txt) => {
   document.getElementById(txt).innerHTML = characterChangeTimeStart;
 };
 
-// const characterChangeTimeEndFN = (ev, txt) => {
-//   characterChangeTimeEnd = ev.value * -1;
-//   console.log(characterChangeTimeEnd);
-//   document.getElementById(txt).innerHTML = characterChangeTimeEnd;
-// };
 
-let speedChange = 400; // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
+let speedChange = 100; // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
 const speedChangeFN = (ev, txt) => {
   speedChange = ev.value;
   console.log(speedChange);
@@ -156,16 +152,37 @@ const speedChangeFN = (ev, txt) => {
 
 let runStatus = true; // สถานะเริ่มหรือ หยุด
 let countTime = 1;
-let maxTime = 5; // ตั้งค่าเวลา
+let maxTime = 10; // ตั้งค่าเวลา
 const maxTimeFN = (ev, txt) => {
   maxTime = ev.value;
   console.log(maxTime);
   document.getElementById(txt).innerHTML = maxTime;
 };
 
-let RewardAudio = new Audio("audio/ra.wav");
+
+// Setup
+const SETUP = () =>{
+   specialCharactersSpeed = .28; //ความเร็วในการเปลี่ยนอักษรพิเศษ
+   characterChangeTimeEnd = 2; //ช่วงเวลาเปลี่ยนตัวอักษร  ตอนจบ
+   characterChangeTimeStart  = 2; //ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม
+   speedChange = 100; // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
+   maxTime = 10;
+}
+
+SETUP();
+
+
+
+
+let RewardAudio = new Audio();
+const RewardAudioFN = (ev) => {
+  // RewardAudio.load();
+  RewardAudio = new Audio("audio/" + ev.value);
+  // document.getElementById(txt).innerHTML = ev.text;
+};
+
 let audio = new Audio();
-const audioNew = (ev, txt) => {
+const audioNew = (ev) => {
   audio.load();
   audio = new Audio("audio/" + ev.value);
   audio.loop = true;
@@ -184,13 +201,26 @@ const audioStop = (audio) => {
   audio.load();
 };
 
+const removeClass = (nameID, ClassName) => {
+  let element = document.getElementById(nameID);
+  element.classList.remove(ClassName);
+};
+const AddClass = (nameID, ClassName) => {
+  let element = document.getElementById(nameID);
+  element.classList.add(ClassName);
+};
+
+// bodyx
 // ——————————————————————————————————————————————————
 // Example
 // ——————————————————————————————————————————————————
 
+
+
+
 // endSettings
 const fx = new TextScramble(el);
-
+let countNumber = 1;
 const next = (TimeDateStart) => {
   let TimeNowRandom = new Date();
   let TimeStartRandom = new Date(TimeDateStart);
@@ -206,17 +236,28 @@ const next = (TimeDateStart) => {
     const LeanTime = (TimeNow, TimeEnd) => {
       let TimeSeconds = TimeNow - TimeEnd;
 
-      if(TimeSeconds < 0){
+      if (TimeSeconds < 0) {
         TimeSeconds = TimeSeconds * -1;
       }
       return TimeSeconds;
     };
 
     // let TimeOut =  TimeEndRandom.getSeconds() - TimeNowRandom.getSeconds() ;
-    console.log(
-      LeanTime(TimeEndRandom.getSeconds(), TimeNowRandom.getSeconds())
-    );
+
     // if()
+
+    let countTime = LeanTime(
+      TimeEndRandom.getSeconds(),
+      TimeNowRandom.getSeconds()
+    );
+
+    if (countTime < 6) {
+      console.log(countTime);
+      // characterChangeTimeEnd = 60;
+      // characterChangeTimeStart = 60;
+      // speedChange = 1000
+      // specialCharactersSpeed = .28
+    }
 
     if (TimeNowRandom.getTime() >= TimeEndRandom.getTime()) {
       audioStop(audio);
@@ -231,9 +272,18 @@ const next = (TimeDateStart) => {
     }
 
     if (runStatus === true) {
-      setTimeout(next(TimeDateStart), 100);
+      if (countNumber % 2 == 0) {
+        removeClass("bodyx", "setBackgroundColor");
+      } else {
+        AddClass("bodyx", "setBackgroundColor");
+      }
+
+      countNumber++;
+
+      setTimeout(next(TimeDateStart), speedChange);
     }
     if (runStatus === false) {
+      removeClass("bodyx", "setBackgroundColor");
       audioPlay(RewardAudio);
 
       return false;
@@ -244,13 +294,15 @@ const next = (TimeDateStart) => {
 };
 
 const startRandom = (textID, btnID) => {
-  audioPlay(audio);
 
   if (phrases == "") {
     alert("กรุณาเพิ่มข้อมูล");
     $("#addata").modal("toggle");
     return false;
   }
+
+  audioPlay(audio);
+
   const TimeDateStart = new Date();
   runStatus = true;
   document.getElementById(textID).style.display = "block";

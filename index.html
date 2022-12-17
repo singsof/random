@@ -14,14 +14,17 @@
 
 </head>
 <style>
-    html,
+    html ,
     body {
         font-family: 'Roboto Mono', monospace;
-        background: #212121;
+
+        background: #131313;
         height: 100%;
     }
 
-    .bcinx {background-color:rgba(48, 255, 59, 0.185);}
+    .setBackgroundColor{
+        background: #b9f3f33d;
+    }
 </style>
 
 
@@ -97,10 +100,14 @@
 
 
 
+<body id="bodyx">
 
+    <div class="containerx">
+        <div id="txt-Random" style="display: none;" class="text"></div>
+        <button id="btn-Random" style="display: block;" type="button" class="btn btn-lg btn-dark"
+            onclick="startRandom('txt-Random','btn-Random');">เริ่มสุ่ม</button>
+    </div>
 
-
-<body class="">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-white">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
@@ -137,11 +144,9 @@
             </div>
         </div>
     </nav>
-    <div class="container">
-        <div id="txt-Random" style="display: none;" class="text"></div>
-        <button id="btn-Random" style="display: block;" type="button" class="btn btn-lg btn-dark"
-            onclick="startRandom('txt-Random','btn-Random');">เริ่มสุ่ม</button>
-    </div>
+
+
+
 
 </body>
 
@@ -187,16 +192,26 @@
                     </div>
                     <div class="col-sm-12">
                         <div class="form-control-sm">
-                            <label class="form-label" for="">เลือกเสียง</label>
-                            <select name="" class="form-control" id="audioID" onchange="audioNew(this,'audioTxT')">
-                                <option  value="mp3_1.mp3">เสียง 1</option>
+                            <label class="form-label" for="">เสียงสุ่มรางวัล</label>
+                            <select name="" class="form-control" id="audioID" onchange="audioNew(this)">
+                                <option value="mp3_1.mp3">เสียง 1</option>
                                 <option selected value="mp3_2.wav">เสียง 2</option>
                                 <option value="mp3_3.wav">เสียง 3</option>
                                 <option value="mp3_4.mp3">เสียง 4</option>
                                 <option value="mp3_5.mp3">เสียง 5</option>
                             </select>
-                            <!-- <span id="audioTxT">mp3_1.mp3</span> -->
-
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-control-sm">
+                            <label class="form-label" for="">เสียงผู้ชะนะ</label>
+                            <select name="" class="form-control" id="RewardAudioID" onchange="RewardAudioFN(this)">
+                                <option selected value="rewar_1.wav">เสียง 1</option>
+                                <option value="mp3_3.wav">เสียง 2</option>
+                                <option value="rewar_1.wav">เสียง 3</option>
+                                <option value="rewar_1.wav">เสียง 4</option>
+                                <option value="rewar_1.wav">เสียง 5</option>
+                            </select>
                         </div>
                     </div>
                     <!-- <div class="col-sm-12">
@@ -299,13 +314,14 @@
 <script src="jscript.js"></script>
 <script>
 
-
     // audioFN()
 
     let audioEv = document.getElementById("audioID");
-    // audioEv.value;
-    // console.log(audioEv.value);
-    audioNew(audioEv, 'audioTxT');
+    audioNew(audioEv);
+
+    let RewardAudioEv = document.getElementById("RewardAudioID");
+    RewardAudioFN(RewardAudioEv);
+
     if (localStorage.getItem('reward') !== '') {
         updateReward("table-hi");
     }
