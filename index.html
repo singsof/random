@@ -19,14 +19,16 @@
     body {
         /* overflow: hidden; */
         font-family: 'Roboto Mono', monospace;
-        background-image: url("http://www.carrushome.com/media/2017/11/4-F15E.jpg");
-        /* background: #131313; */
+        background: #1313130e;
+
+        background-image: url("https://scontent.fnak1-1.fna.fbcdn.net/v/t39.30808-6/271145167_5053296184688901_4061597353383363313_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=730e14&_nc_eui2=AeFjeCUapP6OM5qgavHnA2CkNlzsHtd458A2XOwe13jnwP5G7uLhcAKpF9_ely1nl2MqNeF7OqyxHDpt2rnEyDWk&_nc_ohc=nOHcRh0Vrl4AX-O9Qlo&_nc_ht=scontent.fnak1-1.fna&oh=00_AfA2I9iywE1EtolDt5ah3hfNWFYL7Aiwr8YsXfvV1Q2Ixw&oe=63A574EE");
         height: 100%;
 
         /* Center and scale the image nicely */
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+        
     }
 
     /* Hide scrollbar for Chrome, Safari and Opera */
@@ -41,6 +43,7 @@
         scrollbar-width: none;
         /* Firefox */
     }
+
 
     .setBackgroundColor {
         background: #ffffff36;
@@ -120,10 +123,16 @@
 
 
 
-<body id="bodyx" class="example">
+<body id="bodyx" class="example " style="background-color: rgba(0, 0, 0, 0.507);">
 
 
 
+
+    <div class="containerx">
+        <div id="txt-Random" style="display: none;" class="text "></div>
+        <button id="btn-Random" style="display: block;" type="button" class="btn btn-lg btn-dark"
+            onclick="startRandom('txt-Random','btn-Random');">เริ่มสุ่ม</button>
+    </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-white">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
@@ -161,18 +170,14 @@
         </div>
     </nav>
 
-    <div class="containerx">
-        <div id="txt-Random" style="display: none;" class="text "></div>
-        <button id="btn-Random" style="display: block;" type="button" class="btn btn-lg btn-dark"
-            onclick="startRandom('txt-Random','btn-Random');">เริ่มสุ่ม</button>
-    </div>
     <!-- Footer -->
     <footer class="bg-dark text-center text-white">
         <!-- Grid container -->
         <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
             © 2022 Copyright:
-            <a class="text-white" style="text-decoration: none;"> By สมพล วิลา, ครุฑฤทธิ์ หอมจำปา นักศึกษาฝึกงานฝ่ายเทคโนโลยีสารสนเทศ กองบิน ๒๑</a>
+            <a class="text-white" style="text-decoration: none;"> By สมพล วิลา, ครุฑฤทธิ์ หอมจำปา
+                นักศึกษาฝึกงานฝ่ายเทคโนโลยีสารสนเทศ กองบิน ๒๑</a>
         </div>
         <!-- Copyright -->
     </footer>
@@ -328,11 +333,13 @@
     if (localStorage.getItem('dataRandom') !== '') {
         stingName = '';
         const dataRandom = JSON.parse(localStorage.getItem('dataRandom'));
-        dataRandom.forEach((value) => {
-            // console.log(value);
-            stingName += value.name + "\n";
-            // phrases.push(value.name)
-        });
+        if (dataRandom == "" || dataRandom != null) {
+            dataRandom.forEach((value) => {
+                // console.log(value);
+                stingName += value.name + "\n";
+                // phrases.push(value.name)
+            });
+        }
         document.getElementById('xlx_json').value = stingName;
         phrases = dataRandom;
         // console.log(phrases[2].name)

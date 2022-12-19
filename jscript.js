@@ -95,17 +95,19 @@ updateData();
 const updateReward = (tableID) => {
   let stinHtml = " <tr> <th>รหัส</th><th>ชื่อ</th></tr>";
   const reward = JSON.parse(localStorage.getItem("reward"));
-  reward.forEach((value) => {
-    stinHtml +=
-      "<tr>" +
-      "<td>" +
-      value.key +
-      "</td>" +
-      "<td>" +
-      value.name +
-      "</td>" +
-      "</tr>";
-  });
+  if (reward !== "" || reward !== null) {
+    reward.forEach((value) => {
+      stinHtml +=
+        "<tr>" +
+        "<td>" +
+        value.key +
+        "</td>" +
+        "<td>" +
+        value.name +
+        "</td>" +
+        "</tr>";
+    });
+  }
 
   document.getElementById(tableID).innerHTML = stinHtml;
 };
@@ -122,10 +124,7 @@ const addReward = (value) => {
     localStorage.setItem("reward", JSON.stringify(rewardArrayValue));
   }
   updateReward("table-hi");
-
 };
-
-
 
 // ——————————————————————————————————————————————————
 
