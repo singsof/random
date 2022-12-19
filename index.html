@@ -14,16 +14,35 @@
 
 </head>
 <style>
-    html ,
+    html,
     body {
+        /* overflow: hidden; */
         font-family: 'Roboto Mono', monospace;
-
-        background: #131313;
+        background-image: url("http://www.carrushome.com/media/2017/11/4-F15E.jpg");
+        /* background: #131313; */
         height: 100%;
+
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 
-    .setBackgroundColor{
-        background: #b9f3f33d;
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .example::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .example {
+        -ms-overflow-style: none;
+        /* IE and Edge */
+        scrollbar-width: none;
+        /* Firefox */
+    }
+
+    .setBackgroundColor {
+        background: #ffffff36;
     }
 </style>
 
@@ -100,10 +119,10 @@
 
 
 
-<body id="bodyx">
+<body id="bodyx" class="example">
 
     <div class="containerx">
-        <div id="txt-Random" style="display: none;" class="text"></div>
+        <div id="txt-Random" style="display: none;" class="text "></div>
         <button id="btn-Random" style="display: block;" type="button" class="btn btn-lg btn-dark"
             onclick="startRandom('txt-Random','btn-Random');">เริ่มสุ่ม</button>
     </div>
@@ -195,8 +214,8 @@
                             <label class="form-label" for="">เสียงสุ่มรางวัล</label>
                             <select name="" class="form-control" id="audioID" onchange="audioNew(this)">
                                 <option value="mp3_1.mp3">เสียง 1</option>
-                                <option selected value="mp3_2.wav">เสียง 2</option>
-                                <option value="mp3_3.wav">เสียง 3</option>
+                                <option value="mp3_2.wav">เสียง 2</option>
+                                <option selected value="mp3_3.wav">เสียง 3</option>
                                 <option value="mp3_4.mp3">เสียง 4</option>
                                 <option value="mp3_5.mp3">เสียง 5</option>
                             </select>
@@ -206,11 +225,11 @@
                         <div class="form-control-sm">
                             <label class="form-label" for="">เสียงผู้ชะนะ</label>
                             <select name="" class="form-control" id="RewardAudioID" onchange="RewardAudioFN(this)">
-                                <option selected value="rewar_1.wav">เสียง 1</option>
-                                <option value="mp3_3.wav">เสียง 2</option>
-                                <option value="rewar_1.wav">เสียง 3</option>
-                                <option value="rewar_1.wav">เสียง 4</option>
-                                <option value="rewar_1.wav">เสียง 5</option>
+                                <option value="rewar_1.wav">เสียง 1</option>
+                                <option selected value="rewar_2.mp3">เสียง 2</option>
+                                <option value="rewar_3.mp3">เสียง 3</option>
+                                <!-- <option value="rewar_1.wav">เสียง 4</option>
+                                <option value="rewar_1.wav">เสียง 5</option> -->
                             </select>
                         </div>
                     </div>

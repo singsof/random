@@ -7,11 +7,36 @@
   align-items: center;
   display: flex;
 }
+
 .text {
-  font-weight: 100;
+
   font-size: 90px;
-  color: #fafafa;
+  font-weight: 150;
+  text-align: center;
+  background: linear-gradient(to right, #3cffeb, #fc9518, #ff389c);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: gradient 5s infinite;
+  /* text-shadow: rgb(255, 255, 255) 0.1em 0.1em 0.2em */
+  /* font-weight: 100;
+  font-size: 90px;
+  color: #000000; */
+
 }
+
+
 .dud {
-  color: #757575;
+  /* color: #cacacac5; */
+  
+
+  font-size: 90px;
+  font-weight: 100;
+  text-align: center;
+  background: linear-gradient(to right, #f80000, #ff8c00, #ff05c1);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
+
+

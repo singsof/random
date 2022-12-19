@@ -121,7 +121,11 @@ const addReward = (value) => {
     rewardArrayValue.push(value);
     localStorage.setItem("reward", JSON.stringify(rewardArrayValue));
   }
+  updateReward("table-hi");
+
 };
+
+
 
 // ——————————————————————————————————————————————————
 
@@ -142,8 +146,7 @@ const characterChangeTimeStartFN = (ev, txt) => {
   document.getElementById(txt).innerHTML = characterChangeTimeStart;
 };
 
-
-let speedChange = 100; // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
+let speedChange = 50; // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
 const speedChangeFN = (ev, txt) => {
   speedChange = ev.value;
   console.log(speedChange);
@@ -159,20 +162,21 @@ const maxTimeFN = (ev, txt) => {
   document.getElementById(txt).innerHTML = maxTime;
 };
 
-
 // Setup
-const SETUP = () =>{
-   specialCharactersSpeed = .28; //ความเร็วในการเปลี่ยนอักษรพิเศษ
-   characterChangeTimeEnd = 2; //ช่วงเวลาเปลี่ยนตัวอักษร  ตอนจบ
-   characterChangeTimeStart  = 2; //ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม
-   speedChange = 100; // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
-   maxTime = 10;
-}
+const SETUP = (
+  specialCharactersSpeedx = 0.28,
+  characterChangeTimeEndx = 2,
+  characterChangeTimeStartx = 2,
+  speedChangex = 50
+) => {
+  specialCharactersSpeed = specialCharactersSpeedx; //ความเร็วในการเปลี่ยนอักษรพิเศษ
+  characterChangeTimeEnd = characterChangeTimeEndx; //ช่วงเวลาเปลี่ยนตัวอักษร  ตอนจบ
+  characterChangeTimeStart = characterChangeTimeStartx; //ช่วงเวลาเปลี่ยนตัวอักษร ตอนเริ่ม
+  speedChange = speedChangex; // เว้นช่วงช่องไฟระหว่างการเปลี่ยนตัว
+  maxTime = 10;
+};
 
 SETUP();
-
-
-
 
 let RewardAudio = new Audio();
 const RewardAudioFN = (ev) => {
@@ -215,9 +219,6 @@ const AddClass = (nameID, ClassName) => {
 // Example
 // ——————————————————————————————————————————————————
 
-
-
-
 // endSettings
 const fx = new TextScramble(el);
 let countNumber = 1;
@@ -235,7 +236,6 @@ const next = (TimeDateStart) => {
   ).then(() => {
     const LeanTime = (TimeNow, TimeEnd) => {
       let TimeSeconds = TimeNow - TimeEnd;
-
       if (TimeSeconds < 0) {
         TimeSeconds = TimeSeconds * -1;
       }
@@ -251,23 +251,26 @@ const next = (TimeDateStart) => {
       TimeNowRandom.getSeconds()
     );
 
-    if (countTime < 6) {
-      console.log(countTime);
-      // characterChangeTimeEnd = 60;
-      // characterChangeTimeStart = 60;
-      // speedChange = 1000
-      // specialCharactersSpeed = .28
+    if (countTime < parseInt(maxTime / 1.3) + 1) {
+      if (countTime < parseInt(maxTime / 2) + 1) {
+        if (countTime < parseInt(maxTime / 3) + 1) {
+          if (countTime < parseInt(maxTime / 4)) {
+            console.log(countTime);
+            SETUP(0.28, 150, 10, 100);
+          }
+        } else {
+          console.log(countTime);
+          SETUP(0.28, 50, 50, 100);
+        }
+      } else {
+        console.log(countTime);
+        SETUP(0.28, 8, 8, 90);
+      }
+    } else {
+      // SETUP();
     }
 
     if (TimeNowRandom.getTime() >= TimeEndRandom.getTime()) {
-      audioStop(audio);
-      // console.log()
-
-      let resutIndex = getRndInteger(0, phrases.length); // คำตอบ
-      fx.setText(phrases[resutIndex].name, 100, 100);
-
-      addReward(phrases[resutIndex]);
-
       runStatus = false;
     }
 
@@ -283,9 +286,19 @@ const next = (TimeDateStart) => {
       setTimeout(next(TimeDateStart), speedChange);
     }
     if (runStatus === false) {
+      // console.log()
+      SETUP(0.28, 200, 200, 100);
+      let resutIndex = getRndInteger(0, phrases.length); // คำตอบ
+      fx.setText(
+        phrases[resutIndex].name,
+        characterChangeTimeStart,
+        characterChangeTimeEnd
+      );
       removeClass("bodyx", "setBackgroundColor");
       audioPlay(RewardAudio);
-
+      audioStop(audio);
+      addReward(phrases[resutIndex]);
+      SETUP(0.28, 2, 2, 60);
       return false;
     }
   });
@@ -294,13 +307,12 @@ const next = (TimeDateStart) => {
 };
 
 const startRandom = (textID, btnID) => {
-
   if (phrases == "") {
     alert("กรุณาเพิ่มข้อมูล");
     $("#addata").modal("toggle");
     return false;
   }
-
+  audioStop(RewardAudio);
   audioPlay(audio);
 
   const TimeDateStart = new Date();
@@ -311,6 +323,30 @@ const startRandom = (textID, btnID) => {
 };
 
 const stopRandom = (textID, btnID) => {
-  audioStop(audio);
   runStatus = false;
+  audioStop(RewardAudio);
 };
+
+document.addEventListener(
+  "keyup",
+  (event) => {
+    const keyName = event.code;
+    // alert()
+    if (keyName === "KeyW") {
+      startRandom("txt-Random", "btn-Random");
+    }
+    if (keyName === "KeyQ") {
+      stopRandom("txt-Random", "btn-Random");
+    }
+    if (keyName === "KeyH") {
+      $("#hidata").modal("toggle");
+    }
+    if (keyName === "KeyI") {
+      $("#addata").modal("toggle");
+    }
+    if (keyName === "KeyS") {
+      $("#settingValue").modal("toggle");
+    }
+  },
+  false
+);
